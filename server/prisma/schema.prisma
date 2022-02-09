@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int        @id @default(autoincrement())
+  username   String     @unique
+  email      String     @unique
+  avatar     String
+  password   String
+  role       String     @default("user")
+  reviews    Review[]
+  purcahses  Purchase[]
+  created_at DateTime   @default(now())
+  updated_at DateTime   @default(now())
+}
+
+model Purchase {
+  id         Int      @id @default(autoincrement())
+  currency   String   @default("USD")
+  amount     Int
+  discount   Int      @default(0)
+  user       User     @relation(fields: [user_id], references: [id])
+  user_id    Int
+  game       Game     @relation(fields: [game_id], references: [id])
+  game_id    Int
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+}
+
+model Review {
+  id         Int      @id @default(autoincrement())
+  content    String
+  rating     Int
+  user       User     @relation(fields: [user_id], references: [id])
+  user_id    Int
+  game       Game     @relation(fields: [game_id], references: [id])
+  game_id    Int
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+}
+
+model Category {
+  id         Int      @id @default(autoincrement())
+  name       String   @unique
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  Game       Game[]
+}
+
+model Game {
+  id           Int        @id @default(autoincrement())
+  name         String     @unique
+  image        String
+  info         String
+  details      String
+  images       String[]
+  tags         String[]
+  price        Int
+  is_available Boolean    @default(true)
+  category     Category   @relation(fields: [category_id], references: [id])
+  category_id  Int
+  game_size    String
+  reviews      Review[]
+  created_at   DateTime   @default(now())
+  updated_at   DateTime   @default(now())
+  purchases    Purchase[]
+}
