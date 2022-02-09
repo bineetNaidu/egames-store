@@ -1,5 +1,6 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { User } from '@prisma/client';
+import { AuthResponse } from './auth.response';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 
@@ -8,12 +9,12 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  async login(@Body() data: LoginDto): Promise<User> {
+  async login(@Body() data: LoginDto): Promise<AuthResponse> {
     return await this.authService.login(data);
   }
 
   @Post('register')
-  async register(@Body() data: User): Promise<User> {
+  async register(@Body() data: User): Promise<AuthResponse> {
     return await this.authService.register(data);
   }
 }
