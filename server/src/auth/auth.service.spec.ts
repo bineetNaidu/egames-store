@@ -1,4 +1,5 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../shared/prisma.service';
 import { AuthService } from './auth.service';
@@ -15,6 +16,12 @@ describe('AuthService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [
+        JwtModule.register({
+          secret: 'secretistoohardtoguess',
+          signOptions: { expiresIn: '1d' },
+        }),
+      ],
       providers: [AuthService, PrismaService],
     }).compile();
 
@@ -29,11 +36,13 @@ describe('AuthService', () => {
   it('should register a new user', async () => {
     const data = await service.register(defaultUserData);
     expect(data).toBeDefined();
-    expect(data.username).toEqual(defaultUserData.username);
-    expect(data.email).toEqual(defaultUserData.email);
-    expect(data.password).not.toEqual(defaultUserData.password);
-    expect(data.id).toBeDefined();
-    await prisma.user.delete({ where: { id: data.id } });
+    expect(data.user).toBeDefined();
+    expect(data.accessToken).toBeDefined();
+    expect(data.user.username).toEqual(defaultUserData.username);
+    expect(data.user.email).toEqual(defaultUserData.email);
+    expect(data.user.password).not.toEqual(defaultUserData.password);
+    expect(data.user.id).toBeDefined();
+    await prisma.user.delete({ where: { id: data.user.id } });
   });
 
   it('should throw error on duplicate username', async () => {
@@ -52,7 +61,7 @@ describe('AuthService', () => {
         HttpStatus.BAD_REQUEST,
       ),
     );
-    await prisma.user.delete({ where: { id: u.id } });
+    await prisma.user.delete({ where: { id: u.user.id } });
   });
 
   it('should return a user on login', async () => {
@@ -62,11 +71,13 @@ describe('AuthService', () => {
       password: defaultUserData.password,
     });
     expect(data).toBeDefined();
-    expect(data.username).toEqual(defaultUserData.username);
-    expect(data.email).toEqual(defaultUserData.email);
-    expect(data.password).not.toEqual(defaultUserData.password);
-    expect(data.id).toBeDefined();
-    await prisma.user.delete({ where: { id: u.id } });
+    expect(data.user).toBeDefined();
+    expect(data.accessToken).toBeDefined();
+    expect(data.user.username).toEqual(defaultUserData.username);
+    expect(data.user.email).toEqual(defaultUserData.email);
+    expect(data.user.password).not.toEqual(defaultUserData.password);
+    expect(data.user.id).toBeDefined();
+    await prisma.user.delete({ where: { id: u.user.id } });
   });
 
   it.todo('should throw error on invalid password in login');
