@@ -1,9 +1,9 @@
 import { verify, hash } from 'argon2';
 import {
   Injectable,
-  HttpException,
-  HttpStatus,
   UnauthorizedException,
+  NotFoundException,
+  ConflictException,
 } from '@nestjs/common';
 import { PrismaService } from '../shared/prisma.service';
 import { Prisma, User } from '@prisma/client';
@@ -35,17 +35,14 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new HttpException(
-        {
-          errors: [
-            {
-              field: 'email',
-              message: 'User not found',
-            },
-          ],
-        },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new NotFoundException({
+        errors: [
+          {
+            field: 'email',
+            message: 'The User with this email not found',
+          },
+        ],
+      });
     }
 
     const isValid = await verify(user.password, data.password);
@@ -86,17 +83,14 @@ export class AuthService {
       },
     });
     if (isExistingUser) {
-      throw new HttpException(
-        {
-          errors: [
-            {
-              field: 'username',
-              message: 'Username or email already exists',
-            },
-          ],
-        },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new ConflictException({
+        errors: [
+          {
+            field: 'username',
+            message: 'A User with this username or email already exists',
+          },
+        ],
+      });
     }
 
     const hashPassword = await hash(data.password, { hashLength: 12 });
