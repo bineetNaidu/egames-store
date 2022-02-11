@@ -13,20 +13,27 @@ export class IsAuthenticatedMiddleware implements NestMiddleware {
     const token = req.headers['x-access-token'] as string;
     if (token) {
       const isAuthed = this.jwtService.verify(token);
-      console.log(isAuthed);
-      next();
-    } else {
-      throw new UnauthorizedException(
-        {
+      if (!isAuthed) {
+        throw new UnauthorizedException({
           errors: [
             {
               field: 'token',
-              message: 'Token is required',
+              message: 'Invalid token',
             },
           ],
-        },
-        'Token is required',
-      );
+        });
+      } else {
+        next();
+      }
+    } else {
+      throw new UnauthorizedException({
+        errors: [
+          {
+            field: 'token',
+            message: 'No token provided',
+          },
+        ],
+      });
     }
   }
 }
