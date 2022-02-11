@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get, Req } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { AuthResponse } from './auth.response';
 import { AuthService } from './auth.service';
@@ -16,5 +16,10 @@ export class AuthController {
   @Post('register')
   async register(@Body() data: User): Promise<AuthResponse> {
     return await this.authService.register(data);
+  }
+
+  @Get('profile')
+  async profile(@Req() req): Promise<Pick<AuthResponse, 'user'>> {
+    return await this.authService.profile(req);
   }
 }

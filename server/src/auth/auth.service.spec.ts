@@ -1,4 +1,8 @@
-import { HttpException, HttpStatus } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../shared/prisma.service';
@@ -80,10 +84,25 @@ describe('AuthService', () => {
     await prisma.user.delete({ where: { id: u.user.id } });
   });
 
-  it.todo('should throw error on invalid password in login');
-  it.todo('should return authenticated user on me request');
-  it.todo('should throw error on invalid email in login');
-  it.todo('should set session on login');
-  it.todo('should set session on register');
-  it.todo('should throw error on unauthenticated request on me');
+  it('should throw error on invalid password in login', async () => {
+    const u = await service.register(defaultUserData);
+    const data = service.login({
+      email: defaultUserData.email,
+      password: 'wrongpassword',
+    });
+    await expect(data).rejects.toThrow(
+      new UnauthorizedException(
+        {
+          errors: [
+            {
+              field: 'password',
+              message: 'Invalid password',
+            },
+          ],
+        },
+        'Invalid password',
+      ),
+    );
+    await prisma.user.delete({ where: { id: u.user.id } });
+  });
 });
