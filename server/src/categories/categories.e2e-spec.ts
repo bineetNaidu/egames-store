@@ -11,10 +11,10 @@ describe('AppController (e2e)', () => {
   let prisma: PrismaService;
   let accessToken: string;
   const testUser = {
-    username: 'test',
-    email: 'test@test.com',
-    password: 'test',
-    avatar: 'test',
+    username: 'testusercategories',
+    email: 'testusercategories@testusercategories.com',
+    password: 'testusercategories',
+    avatar: 'testusercategories',
   };
 
   beforeEach(async () => {
@@ -179,6 +179,7 @@ describe('AppController (e2e)', () => {
     await prisma.category.deleteMany({});
   });
   afterAll(async () => {
+    await prisma.$disconnect();
     await app.close();
   });
 });
