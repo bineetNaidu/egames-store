@@ -59,7 +59,7 @@ model Category {
 model Game {
   id           Int        @id @default(autoincrement())
   name         String     @unique
-  image        String
+  thumbnail    String
   info         String
   details      String
   images       String[]
