@@ -53,7 +53,7 @@ model Category {
   name       String   @unique
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
-  Game       Game[]
+  games      Game[]
 }
 
 model Game {
