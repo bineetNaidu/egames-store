@@ -3,17 +3,9 @@ import { Text, Container, Input, Button } from '@nextui-org/react';
 
 export const Navbar: FC = () => {
   return (
-    <Container
-      as="nav"
-      css={{
-        my: '0.8rem',
-        d: 'flex',
-        jc: 'space-between',
-        alignItems: 'center',
-      }}
-    >
+    <Container as="nav" className="my-8 flex justify-between items-center">
       <div>
-        <Text h2 color="white">
+        <Text h2 color="white" className="text-4xl font-bold">
           E Games Store
         </Text>
       </div>
@@ -28,7 +20,7 @@ export const Navbar: FC = () => {
         />
       </div>
 
-      <div className="flex">
+      <div className="flex gap-2">
         <Button rounded color="gradient" auto>
           Login
         </Button>
