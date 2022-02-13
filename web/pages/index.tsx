@@ -1,9 +1,10 @@
+import { Text } from '@nextui-org/react';
 import type { NextPage } from 'next';
 
 const Home: NextPage = () => {
   return (
     <div>
-      <h1>Hello E Games Store</h1>
+      <Text>Hello E Games Store</Text>
     </div>
   );
 };
