@@ -10,3 +10,7 @@ export const setAccessTokenInCookie = (token: string) => {
 export const removeAccessTokenInCookie = () => {
   Cookies.remove(COOKIE_TOKEN_NAME);
 };
+
+export const sleep = (ms: number) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
