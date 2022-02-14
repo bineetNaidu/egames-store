@@ -1,7 +1,8 @@
-import { Input, Button } from '@nextui-org/react';
+import { Input, Button, Text, Link as NextUILink } from '@nextui-org/react';
 import type { NextPage } from 'next';
 import Link from 'next/link';
 import Head from 'next/head';
+import styles from '../styles/login.module.css';
 
 const Login: NextPage = () => {
   return (
@@ -9,20 +10,53 @@ const Login: NextPage = () => {
       <Head>
         <title>Login</title>
       </Head>
-      <div className="flex h-full flex-col justify-center items-center text-white mt-16">
+      <div className={styles.login}>
         <div>
-          <h2 className="text-purple-400">Welcome Back!</h2>
-          <h1 className="text-5xl my-2 font-semibold">
-            Login in to Your Account <span className="text-purple-600">.</span>
-          </h1>
+          <Text
+            h4
+            css={{
+              color: '$textPrimary',
+              fontWeight: 'bold',
+              textTransform: 'uppercase',
+            }}
+          >
+            Welcome Back!
+          </Text>
+          <Text
+            h1
+            css={{
+              color: '$white',
+              fontSize: '3rem',
+              lineHeight: 1,
+              fontWeight: '$bold',
+              my: '0.5rem',
+            }}
+          >
+            Login to your account{' '}
+            <Text span css={{ color: '$textPrimaryDeep' }}>
+              .
+            </Text>
+          </Text>
           <div className="flex">
-            <h2 className="text-purple-400">Dont have an account?</h2>
-            <Link href="/register">
-              <a className="text-blue-200 ml-2 underline">Register</a>
+            <Text h5 css={{ color: '$textPrimary' }}>
+              Don&apos;t have an account?
+            </Text>
+            <Link href="/register" passHref>
+              <NextUILink
+                className="text-blue-200 ml-2 underline"
+                animated
+                css={{
+                  color: '$link',
+                  textDecoration: 'underline',
+                  ml: '0.5rem',
+                }}
+              >
+                Register
+              </NextUILink>
             </Link>
           </div>
 
-          <div className="flex flex-col my-8 gap-y-12">
+          <div className={styles.login__form}>
             <Input
               labelLeft="username"
               underlined

@@ -1,14 +1,35 @@
 import { FC } from 'react';
 import Link from 'next/link';
 import { Text, Container, Input, Button } from '@nextui-org/react';
+import styles from '../styles/Navbar.module.css';
 
 export const Navbar: FC = () => {
   return (
-    <Container as="nav" className="my-8 flex justify-between items-center">
+    <Container
+      fluid
+      as="nav"
+      css={{
+        my: '2rem',
+        d: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}
+    >
       <div>
-        <Text h2 color="white" className="text-4xl font-bold">
-          E Games Store
-        </Text>
+        <Link href="/" passHref>
+          <Text
+            h2
+            color="white"
+            css={{
+              fontWeight: 'bold',
+              fontSize: '2.25rem',
+              lineHeight: '2.5rem',
+              cursor: 'pointer',
+            }}
+          >
+            E Games Store
+          </Text>
+        </Link>
       </div>
 
       <div>
@@ -21,7 +42,7 @@ export const Navbar: FC = () => {
         />
       </div>
 
-      <div className="flex gap-2">
+      <div className={styles.navbar_ctx}>
         <Link href="/login" passHref>
           <Button rounded color="gradient" auto>
             Login

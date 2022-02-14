@@ -9,6 +9,10 @@ function MyApp({ Component, pageProps }: AppProps) {
     theme: {
       colors: {
         background: '#10075c',
+        text: 'rgb(191 219 254 / 1)',
+        textPrimary: 'rgb(192 132 252 / 1)',
+        textPrimaryDeep: 'rgb(147 51 234 / 1)',
+        link: 'rgb(191 219 254 / 1)',
       },
     },
   });
