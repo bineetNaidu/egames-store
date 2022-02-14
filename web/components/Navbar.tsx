@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import Link from 'next/link';
 import { Text, Container, Input, Button } from '@nextui-org/react';
 
 export const Navbar: FC = () => {
@@ -21,13 +22,17 @@ export const Navbar: FC = () => {
       </div>
 
       <div className="flex gap-2">
-        <Button rounded color="gradient" auto>
-          Login
-        </Button>
+        <Link href="/login" passHref>
+          <Button rounded color="gradient" auto>
+            Login
+          </Button>
+        </Link>
 
-        <Button rounded color="gradient" auto>
-          Register
-        </Button>
+        <Link href="/register" passHref>
+          <Button rounded color="gradient" auto>
+            Register
+          </Button>
+        </Link>
       </div>
     </Container>
   );
