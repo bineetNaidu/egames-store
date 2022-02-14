@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app';
 import { Container, NextUIProvider, createTheme } from '@nextui-org/react';
 import { Navbar } from '../components/Navbar';
 import { UserStoreProvider, useCreateUserStore } from '../lib/store/user.store';
+import { ToastProvider } from 'react-toast-notifications';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const theme = createTheme({
@@ -25,7 +26,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         <NextUIProvider theme={theme}>
           <Container css={{ h: '100%', minHeight: '100vh' }}>
             <Navbar />
-            <Component {...pageProps} />
+            <ToastProvider>
+              <Component {...pageProps} />
+            </ToastProvider>
           </Container>
         </NextUIProvider>
       </UserStoreProvider>
