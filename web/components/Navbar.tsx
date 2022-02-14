@@ -1,9 +1,22 @@
 import { FC } from 'react';
 import Link from 'next/link';
-import { Text, Container, Input, Button } from '@nextui-org/react';
+import {
+  Text,
+  Container,
+  Input,
+  Button,
+  Avatar,
+  Grid,
+  Row,
+  Col,
+  Card,
+} from '@nextui-org/react';
 import styles from '../styles/Navbar.module.css';
+import { useUserStore } from '../lib/store/user.store';
 
 export const Navbar: FC = () => {
+  const { isAuthenticated, authUser } = useUserStore();
+
   return (
     <Container
       fluid
@@ -43,17 +56,50 @@ export const Navbar: FC = () => {
       </div>
 
       <div className={styles.navbar_ctx}>
-        <Link href="/login" passHref>
-          <Button rounded color="gradient" auto>
-            Login
-          </Button>
-        </Link>
+        {isAuthenticated ? (
+          <Card animated clickable css={{ width: 'fit-content' }} shadow>
+            <Grid>
+              <Row>
+                <Col>
+                  <Avatar
+                    size="lg"
+                    src={authUser!.avatar}
+                    color="gradient"
+                    bordered
+                  />
+                </Col>
+                <Col>
+                  <Text
+                    color="white"
+                    css={{
+                      fontWeight: 'bold',
+                      fontSize: '1.25rem',
+                      lineHeight: '1.5rem',
+                      marginLeft: '1rem',
+                      pt: '0.7rem',
+                    }}
+                  >
+                    {authUser!.username}
+                  </Text>
+                </Col>
+              </Row>
+            </Grid>
+          </Card>
+        ) : (
+          <>
+            <Link href="/login" passHref>
+              <Button rounded color="gradient" auto>
+                Login
+              </Button>
+            </Link>
 
-        <Link href="/register" passHref>
-          <Button rounded color="gradient" auto>
-            Register
-          </Button>
-        </Link>
+            <Link href="/register" passHref>
+              <Button rounded color="gradient" auto>
+                Register
+              </Button>
+            </Link>
+          </>
+        )}
       </div>
     </Container>
   );
