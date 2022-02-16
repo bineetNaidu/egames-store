@@ -2,8 +2,16 @@ import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { Container, NextUIProvider, createTheme } from '@nextui-org/react';
 import { Navbar } from '../components/Navbar';
-import { UserStoreProvider, useCreateUserStore } from '../lib/store/user.store';
+import {
+  UserStoreProvider,
+  useCreateUserStore as createUserStore,
+} from '../lib/store/user.store';
 import { ToastProvider } from 'react-toast-notifications';
+import {
+  CategoriesStoreProvider,
+  createCategoriesStore,
+} from '../lib/store/categories.store';
+import { GameStoreProvider, createGameStore } from '../lib/store/games.store';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const theme = createTheme({
@@ -18,7 +26,11 @@ function MyApp({ Component, pageProps }: AppProps) {
       },
     },
   });
-  const userStore = useCreateUserStore(pageProps.initialUserStore);
+  const userStore = createUserStore(pageProps.initialUserStore);
+  const categoriesStore = createCategoriesStore(
+    pageProps.initialCategoriesStore
+  );
+  const gameStore = createGameStore(pageProps.initialGameStore);
 
   return (
     <>
@@ -27,7 +39,11 @@ function MyApp({ Component, pageProps }: AppProps) {
           <Container css={{ h: '100%', minHeight: '100vh' }}>
             <Navbar />
             <ToastProvider>
-              <Component {...pageProps} />
+              <CategoriesStoreProvider createStore={categoriesStore}>
+                <GameStoreProvider createStore={gameStore}>
+                  <Component {...pageProps} />
+                </GameStoreProvider>
+              </CategoriesStoreProvider>
             </ToastProvider>
           </Container>
         </NextUIProvider>
