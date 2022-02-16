@@ -15,6 +15,7 @@ import {
   useCategoriesStore,
 } from '../lib/store/categories.store';
 import { initializeGameStore, useGameStore } from '../lib/store/games.store';
+import { GameCard } from '../components/GameCard';
 
 const Home: NextPage = () => {
   const { addToast } = useToasts();
@@ -48,7 +49,13 @@ const Home: NextPage = () => {
       </Grid>
       <Grid xs={9}>
         <Card>
-          <h1>Here the games section goes</h1>
+          <Grid.Container gap={2} justify="center">
+            {games.map((g) => (
+              <Grid xs={4} key={g.id}>
+                <GameCard game={g} />
+              </Grid>
+            ))}
+          </Grid.Container>
         </Card>
       </Grid>
     </Grid.Container>
