@@ -2,10 +2,24 @@ import { Text } from '@nextui-org/react';
 import type { GetServerSideProps, NextPage } from 'next';
 import { axiosClient } from '../lib/axiosClient';
 import { COOKIE_TOKEN_NAME } from '../lib/constant';
-import { initializeUserStore } from '../lib/store/user.store';
+import { initializeUserStore, useUserStore } from '../lib/store/user.store';
 import { IAuthResponse } from '../lib/types';
+import { useToasts } from 'react-toast-notifications';
+import { useEffect } from 'react';
 
 const Home: NextPage = () => {
+  const { addToast } = useToasts();
+  const { isAuthenticated, authUser } = useUserStore();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      addToast(`Welcome Back!, ${authUser!.username}`, {
+        appearance: 'success',
+        autoDismiss: true,
+      });
+    }
+  }, [isAuthenticated, authUser, addToast]);
+
   return (
     <div>
       <Text>Hello E Games Store</Text>

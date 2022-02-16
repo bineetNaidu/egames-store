@@ -37,11 +37,13 @@ const Register: NextPage = () => {
     if (accessToken) {
       setAccessTokenInCookie(accessToken);
       setAuthUser(user!);
-      addToast('Successfully registered', {
+      addToast('Successfully registered Your Account', {
         appearance: 'success',
         autoDismiss: true,
+        onDismiss: () => {
+          window.location.href = '/';
+        },
       });
-      window.location.href = '/';
     }
 
     return errors || [];
@@ -105,25 +107,32 @@ const Register: NextPage = () => {
               username: '',
               avatar: '',
             }}
-            onSubmit={async (values, { setSubmitting, setErrors }) => {
+            onSubmit={async (values, { setSubmitting }) => {
               try {
                 setSubmitting(true);
                 await sleep(2000);
                 const errors = await handleRegister(values);
+
                 if (errors.length) {
-                  const fmtErr = errors.map(({ message, field }) => ({
-                    [field]: message,
-                  }));
-                  setErrors(fmtErr as any);
+                  throw new Error(JSON.stringify(errors));
                 } else {
                   setSubmitting(false);
                 }
               } catch (e) {
-                console.log(`Error: ${(e as Error).message}`);
+                const err = JSON.parse(JSON.stringify(e)) as any;
+                const msg =
+                  err.status === 409
+                    ? 'Username OR Email already taken'
+                    : 'Something Went Wrong';
+                addToast(msg, {
+                  appearance: 'error',
+                  autoDismiss: true,
+                });
+                console.log(`Error: ${msg}`);
               }
             }}
           >
-            {({ getFieldProps, isSubmitting }) => (
+            {({ getFieldProps, isSubmitting, errors }) => (
               <Form>
                 <div className={styles.register__form}>
                   <Input
