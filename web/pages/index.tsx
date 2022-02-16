@@ -1,19 +1,30 @@
-import { Text } from '@nextui-org/react';
+import { Card, Button, Text, Divider, Grid } from '@nextui-org/react';
 import type { GetServerSideProps, NextPage } from 'next';
 import { axiosClient } from '../lib/axiosClient';
 import { COOKIE_TOKEN_NAME } from '../lib/constant';
 import { initializeUserStore, useUserStore } from '../lib/store/user.store';
-import { IAuthResponse } from '../lib/types';
+import {
+  IAuthResponse,
+  ICategoriesResponse,
+  IGamesResponse,
+} from '../lib/types';
 import { useToasts } from 'react-toast-notifications';
 import { useEffect } from 'react';
+import {
+  initializeCategoriesStore,
+  useCategoriesStore,
+} from '../lib/store/categories.store';
+import { initializeGameStore, useGameStore } from '../lib/store/games.store';
 
 const Home: NextPage = () => {
   const { addToast } = useToasts();
   const { isAuthenticated, authUser } = useUserStore();
+  const categories = useCategoriesStore((state) => state.categories);
+  const games = useGameStore((state) => state.games);
 
   useEffect(() => {
     if (isAuthenticated) {
-      addToast(`Welcome Back!, ${authUser!.username}`, {
+      addToast(`Welcome!, ${authUser!.username}`, {
         appearance: 'success',
         autoDismiss: true,
       });
@@ -21,14 +32,34 @@ const Home: NextPage = () => {
   }, [isAuthenticated, authUser, addToast]);
 
   return (
-    <div>
-      <Text>Hello E Games Store</Text>
-    </div>
+    <Grid.Container gap={2}>
+      <Grid xs={3}>
+        <Card>
+          <Text h3 css={{ textAlign: 'center' }}>
+            CATEGORIES
+          </Text>
+          <Divider color="secondary" />
+          {categories.map((c) => (
+            <Button color="gradient" ghost css={{ my: '0.5rem' }} key={c.id}>
+              {c.name}
+            </Button>
+          ))}
+        </Card>
+      </Grid>
+      <Grid xs={9}>
+        <Card>
+          <h1>Here the games section goes</h1>
+        </Card>
+      </Grid>
+    </Grid.Container>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const userStore = initializeUserStore();
+  const gamesStore = initializeGameStore();
+  const categoriesStore = initializeCategoriesStore();
+
   const authCookie = ctx.req.headers.cookie
     ?.split(';')
     .find((c) => c.trim().startsWith(`${COOKIE_TOKEN_NAME}=`));
@@ -41,9 +72,24 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   if (data.user) {
     userStore.getState().setAuthUser(data.user);
   }
+
+  const { data: categoryApiData } = await axiosClient.get<ICategoriesResponse>(
+    '/categories'
+  );
+  categoriesStore.getState().setCategories(categoryApiData.categories);
+
+  const { data: gamesApiData } = await axiosClient.get<IGamesResponse>(
+    '/games'
+  );
+  gamesStore.getState().setGames(gamesApiData.games);
+
   return {
     props: {
       initialUserStore: JSON.parse(JSON.stringify(userStore.getState())),
+      initialCategoriesStore: JSON.parse(
+        JSON.stringify(categoriesStore.getState())
+      ),
+      initialGameStore: JSON.parse(JSON.stringify(gamesStore.getState())),
     },
   };
 };
