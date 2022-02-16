@@ -25,7 +25,7 @@ export type Game = {
   tags: string;
   price: string;
   is_available: string;
-  category?: Category;
+  category?: Pick<Category, 'id' | 'name'>;
   category_id?: number;
   game_size: string;
   reviews: GameReview[];
@@ -34,9 +34,9 @@ export type Game = {
 export type GameReview = {
   content: string;
   rating: string;
-  user?: User;
+  user?: Pick<User, 'id' | 'username' | 'avatar'>;
   user_id?: number;
-  game?: Game;
+  game?: Pick<Game, 'id' | 'name' | 'thumbnail'>;
   game_id?: number;
 } & Base;
 
@@ -109,3 +109,7 @@ export interface ICreateReviewBody extends CreateReviewRequiredFields {}
 
 export interface IUpdateReviewBody
   extends Partial<CreateReviewRequiredFields> {}
+
+export interface IGetReviewResponse extends IResponse {
+  reviews: GameReview[];
+}
