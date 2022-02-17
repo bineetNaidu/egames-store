@@ -15,14 +15,14 @@ export const GameCard: FC<GameCardProps> = ({ game }) => {
           position: 'absolute',
           zIndex: 1,
           top: 0,
-          bgBlur: '#ffffff',
+          bgBlur: '#001055',
           borderBottom: '$borderWeights$light solid rgba(255, 255, 255, 0.2)',
           borderTopLeftRadius: '$base',
           borderTopRightRadius: '$base',
         }}
       >
         <Col>
-          <Text h4 css={{ color: '$blue900', fontWeight: '$medium' }}>
+          <Text h4 css={{ color: 'inherit', fontWeight: '$medium' }}>
             {game.name}
           </Text>
         </Col>
@@ -39,7 +39,7 @@ export const GameCard: FC<GameCardProps> = ({ game }) => {
         blur
         css={{
           position: 'absolute',
-          bgBlur: '#ffffff',
+          bgBlur: '#001055',
           borderTop: '$borderWeights$light solid rgba(255, 255, 255, 0.2)',
           bottom: 0,
           zIndex: 1,
@@ -51,7 +51,7 @@ export const GameCard: FC<GameCardProps> = ({ game }) => {
               pt: '0.2rem',
             }}
           >
-            <Text h4 css={{ color: '$blue900', fontWeight: '$medium' }}>
+            <Text h4 css={{ color: 'inherit', fontWeight: '$medium' }}>
               ${game.price}
             </Text>
           </Col>
@@ -60,7 +60,7 @@ export const GameCard: FC<GameCardProps> = ({ game }) => {
               <Link href={`/game/${game.id}`} passHref>
                 <Button flat auto rounded color="secondary">
                   <Text
-                    css={{ color: '$blue900' }}
+                    css={{ color: 'inherit' }}
                     size={12}
                     weight="bold"
                     transform="uppercase"
