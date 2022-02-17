@@ -22,6 +22,7 @@ import {
   initializeGameReviewStoreStore,
   useGameReviewStore,
 } from '../../lib/store/gameReviews.store';
+import { AddReviewCard } from '../../components/AddReviewCard';
 
 interface GameSSRProps extends IGetGameResponse {}
 
@@ -107,7 +108,7 @@ const Game: NextPage<GameSSRProps> = ({ game }) => {
             <Text h2 css={{ mt: '4rem', mb: '1rem' }}>
               Reviews
             </Text>
-
+            <AddReviewCard gameId={game.id} />
             {reviews.map((review) => (
               <ReviewCard key={review.id} review={review} />
             ))}
