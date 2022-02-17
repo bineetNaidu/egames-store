@@ -21,8 +21,8 @@ export type Game = {
   thumbnail: string;
   info: string;
   details: string;
-  images: string;
-  tags: string;
+  images: string[];
+  tags: string[];
   price: string;
   is_available: string;
   category?: Pick<Category, 'id' | 'name'>;
@@ -33,7 +33,7 @@ export type Game = {
 
 export type GameReview = {
   content: string;
-  rating: string;
+  rating: number;
   user?: Pick<User, 'id' | 'username' | 'avatar'>;
   user_id?: number;
   game?: Pick<Game, 'id' | 'name' | 'thumbnail'>;
