@@ -100,7 +100,12 @@ export class GamesService {
         id,
       },
       include: {
-        category: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
       },
     });
 

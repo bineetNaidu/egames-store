@@ -16,10 +16,25 @@ export class ReviewsService {
 
   async getAllReviews(gameId: number): Promise<ReviewsResponseDto> {
     const reviews = await this.prisma.review.findMany({
+      orderBy: {
+        created_at: 'desc',
+      },
       where: { game: { id: gameId } },
       include: {
-        user: true,
-        game: true,
+        user: {
+          select: {
+            id: true,
+            username: true,
+            avatar: true,
+          },
+        },
+        game: {
+          select: {
+            id: true,
+            name: true,
+            thumbnail: true,
+          },
+        },
       },
     });
     return { reviews };
