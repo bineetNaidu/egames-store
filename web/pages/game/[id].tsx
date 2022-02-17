@@ -18,11 +18,17 @@ import {
 } from '../../lib/types';
 import Head from 'next/head';
 import { ReviewCard } from '../../components/ReviewCard';
+import {
+  initializeGameReviewStoreStore,
+  useGameReviewStore,
+} from '../../lib/store/gameReviews.store';
 
-interface GameSSRProps extends IGetGameResponse, IGetReviewResponse {}
+interface GameSSRProps extends IGetGameResponse {}
 
-const Game: NextPage<GameSSRProps> = ({ game, reviews }) => {
-  if (!game || !reviews) {
+const Game: NextPage<GameSSRProps> = ({ game }) => {
+  const reviews = useGameReviewStore((state) => state.reviews);
+
+  if (!game) {
     return (
       <Container>
         <Head>
@@ -114,6 +120,7 @@ const Game: NextPage<GameSSRProps> = ({ game, reviews }) => {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const userStore = initializeUserStore();
+  const gameReviewStore = initializeGameReviewStoreStore();
 
   const authCookie = ctx.req.headers.cookie
     ?.split(';')
@@ -139,12 +146,18 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { game } = getGameResponse.data;
   const { reviews } = getGameReviewsResponse.data;
 
+  if (reviews.length) {
+    gameReviewStore.getState().setReviews(reviews);
+  }
+
   return {
     notFound: !game,
     props: {
       initialUserStore: JSON.parse(JSON.stringify(userStore.getState())),
+      initialGameReviewStore: JSON.parse(
+        JSON.stringify(gameReviewStore.getState())
+      ),
       game,
-      reviews,
     },
   };
 };
