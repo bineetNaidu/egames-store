@@ -113,3 +113,7 @@ export interface IUpdateReviewBody
 export interface IGetReviewResponse extends IResponse {
   reviews: GameReview[];
 }
+
+export interface ICreateReviewResponse extends IResponse {
+  review: GameReview;
+}
