@@ -1,14 +1,4 @@
-import {
-  Container,
-  Grid,
-  Image,
-  Text,
-  Button,
-  Col,
-  Card,
-  Row,
-  Avatar,
-} from '@nextui-org/react';
+import { Container, Grid, Image, Text, Button, Col } from '@nextui-org/react';
 import { GetServerSideProps, NextPage } from 'next';
 import { axiosClient } from '../../lib/axiosClient';
 import { COOKIE_TOKEN_NAME } from '../../lib/constant';
@@ -19,11 +9,12 @@ import {
   IGetReviewResponse,
 } from '../../lib/types';
 import Head from 'next/head';
+import { ReviewCard } from '../../components/ReviewCard';
 
 interface GameSSRProps extends IGetGameResponse, IGetReviewResponse {}
 
 const Game: NextPage<GameSSRProps> = ({ game, reviews }) => {
-  if (!game) {
+  if (!game || !reviews) {
     return (
       <Container>
         <Head>
@@ -70,15 +61,7 @@ const Game: NextPage<GameSSRProps> = ({ game, reviews }) => {
             </Text>
 
             {reviews.map((review) => (
-              <Card key={review.id} shadow>
-                <Text h5 css={{ fontStyle: 'italic', fontWeight: '$light' }}>
-                  ~ {review.content}
-                </Text>
-                <Row>
-                  <Avatar src={review.user?.avatar} />
-                  <Text>{review.user?.username}</Text>
-                </Row>
-              </Card>
+              <ReviewCard key={review.id} review={review} />
             ))}
           </Col>
         </Grid>
