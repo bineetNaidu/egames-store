@@ -33,9 +33,9 @@ export const initializeGameReviewStoreStore: GameReviewStoreStoreType = (
     ...initialGameReviewStoreState,
     ...preloadedState,
 
-    setReviews: (reviews) => set((state) => ({ reviews })),
+    setReviews: (reviews) => set(() => ({ reviews })),
     addReview: (review) =>
-      set((state) => ({ reviews: [...state.reviews, review] })),
+      set((state) => ({ reviews: [review, ...state.reviews] })),
     deleteReview: (id) =>
       set((state) => ({
         reviews: state.reviews.filter((review) => review.id !== id),
