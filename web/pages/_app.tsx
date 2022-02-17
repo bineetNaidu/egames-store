@@ -12,6 +12,10 @@ import {
   createCategoriesStore,
 } from '../lib/store/categories.store';
 import { GameStoreProvider, createGameStore } from '../lib/store/games.store';
+import {
+  createGameReviewStore,
+  GameReviewStoreStoreProvider,
+} from '../lib/store/gameReviews.store';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const theme = createTheme({
@@ -31,6 +35,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     pageProps.initialCategoriesStore
   );
   const gameStore = createGameStore(pageProps.initialGameStore);
+  const gameReviewStore = createGameReviewStore(
+    pageProps.initialGameReviewStore
+  );
 
   return (
     <>
@@ -41,7 +48,9 @@ function MyApp({ Component, pageProps }: AppProps) {
             <ToastProvider>
               <CategoriesStoreProvider createStore={categoriesStore}>
                 <GameStoreProvider createStore={gameStore}>
-                  <Component {...pageProps} />
+                  <GameReviewStoreStoreProvider createStore={gameReviewStore}>
+                    <Component {...pageProps} />
+                  </GameReviewStoreStoreProvider>
                 </GameStoreProvider>
               </CategoriesStoreProvider>
             </ToastProvider>
