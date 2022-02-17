@@ -1,4 +1,12 @@
-import { Container, Grid, Image, Text, Button, Col } from '@nextui-org/react';
+import {
+  Container,
+  Grid,
+  Image,
+  Text,
+  Button,
+  Col,
+  Row,
+} from '@nextui-org/react';
 import { GetServerSideProps, NextPage } from 'next';
 import { axiosClient } from '../../lib/axiosClient';
 import { COOKIE_TOKEN_NAME } from '../../lib/constant';
@@ -33,13 +41,47 @@ const Game: NextPage<GameSSRProps> = ({ game, reviews }) => {
       </Head>
       <Grid.Container>
         <Grid xs={5}>
-          <Image src={game.thumbnail} alt={game.name} css={{ width: '100%' }} />
+          <Image
+            src={game.thumbnail}
+            alt={game.name}
+            height="fit-content"
+            width="fit-content"
+          />
         </Grid>
         <Grid xs={5}>
           <Col>
             <Text h2>{game.name}</Text>
+            <Row align="center">
+              <Text b>TAGS: </Text>
+              {game.tags.map((tag) => (
+                <Text
+                  b
+                  css={{
+                    py: '$1',
+                    px: '$4',
+                    backgroundColor: '$blue700',
+                    mx: '$4',
+                    my: '$2',
+                    fontSize: '$xs',
+                    borderRadius: '$xs',
+                  }}
+                  key={tag}
+                >
+                  {tag}
+                </Text>
+              ))}
+            </Row>
+            <Row align="center">
+              <Text b>CATEGORY: {game.category?.name}</Text>
+            </Row>
             <Text css={{ mt: '1rem', mb: '2rem' }}>{game.info}</Text>
-            <Button color="gradient">Buy for ${game.price}</Button>
+
+            <Row align="center">
+              <Button color="gradient">Buy for ${game.price}</Button>
+              <Text b css={{ ml: '$4' }}>
+                Size: {game.game_size}
+              </Text>
+            </Row>
           </Col>
         </Grid>
       </Grid.Container>

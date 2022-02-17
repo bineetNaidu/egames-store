@@ -8,6 +8,7 @@ interface ReviewCardProps {
 }
 
 export const ReviewCard: FC<ReviewCardProps> = memo(({ review }) => {
+  const rating = review.rating * 20;
   return (
     <Card shadow css={{ my: '$5' }}>
       <Row align="center">
@@ -20,7 +21,7 @@ export const ReviewCard: FC<ReviewCardProps> = memo(({ review }) => {
         <Text css={{ ml: '0.4rem' }}>{review.user?.username}</Text>
       </Row>
       <Col css={{ pl: '2.8rem' }}>
-        <Rating ratingValue={parseInt(review.rating)} transition readonly />
+        <Rating ratingValue={rating} readonly />
 
         <Text h5 css={{ fontStyle: 'italic', fontWeight: '$light' }}>
           ~ {review.content}
