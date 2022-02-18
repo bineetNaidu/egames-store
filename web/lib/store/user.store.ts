@@ -1,9 +1,10 @@
 import { useLayoutEffect } from 'react';
 import create, { StoreApi, UseBoundStore } from 'zustand';
 import createZustandContext from 'zustand/context';
-import type { User } from '../types';
+import type { GameReview, User } from '../types';
 
 interface IUserStore {
+  myReviews: GameReview[];
   authUser: User | null;
   isAuthenticated: boolean;
   setAuthUser: (user: User) => void;
@@ -11,7 +12,10 @@ interface IUserStore {
   updateAuthUser: (user: Partial<User>) => void;
 }
 
-type InitialUserStateType = Pick<IUserStore, 'authUser' | 'isAuthenticated'>;
+type InitialUserStateType = Pick<
+  IUserStore,
+  'authUser' | 'isAuthenticated' | 'myReviews'
+>;
 
 type UserStoreType = (
   preloadedState?: InitialUserStateType | {}
@@ -20,6 +24,7 @@ type UserStoreType = (
 const initialUserState: InitialUserStateType = {
   authUser: null,
   isAuthenticated: false,
+  myReviews: [],
 };
 
 let store: ReturnType<UserStoreType>;
@@ -33,16 +38,19 @@ export const initializeUserStore: UserStoreType = (preloadedState = {}) =>
     ...initialUserState,
     ...preloadedState,
 
-    setAuthUser: (user) =>
+    setAuthUser: (user) => {
+      const { reviews, ...authUser } = user;
       set({
-        authUser: user,
+        authUser,
         isAuthenticated: true,
-      }),
-
+        myReviews: reviews || [],
+      });
+    },
     removeAuthUser: () =>
       set({
         authUser: null,
         isAuthenticated: false,
+        myReviews: [],
       }),
 
     updateAuthUser: (user) =>

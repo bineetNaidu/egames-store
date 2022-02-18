@@ -10,6 +10,7 @@ export type User = {
   email: string;
   avatar: string;
   role: string;
+  reviews?: GameReview[];
 } & Base;
 
 export type Category = {
