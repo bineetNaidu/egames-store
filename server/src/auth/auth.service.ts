@@ -23,6 +23,14 @@ export class AuthService {
       where: {
         id: (payload as User).id,
       },
+      rejectOnNotFound: true,
+      include: {
+        reviews: {
+          orderBy: {
+            created_at: 'desc',
+          },
+        },
+      },
     });
     delete user.password;
     return { user };
