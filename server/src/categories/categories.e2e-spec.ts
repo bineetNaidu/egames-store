@@ -175,8 +175,8 @@ describe('AppController (e2e)', () => {
   });
 
   afterEach(async () => {
-    await prisma.user.deleteMany({});
     await prisma.category.deleteMany({});
+    await prisma.user.deleteMany({});
   });
   afterAll(async () => {
     await prisma.$disconnect();
