@@ -7,8 +7,6 @@ import {
   Button,
   FormElement,
   Card,
-  Col,
-  Image,
   Row,
 } from '@nextui-org/react';
 import styles from '../styles/Navbar.module.css';
@@ -37,7 +35,6 @@ export const Navbar: FC = () => {
     }
     const results = fuse.search(value);
     setSearchResults(results);
-    console.log(searchResults);
   };
   return (
     <Container
