@@ -34,6 +34,22 @@ export class AuthService {
           orderBy: {
             created_at: 'desc',
           },
+          include: {
+            user: {
+              select: {
+                id: true,
+                username: true,
+                avatar: true,
+              },
+            },
+            game: {
+              select: {
+                id: true,
+                name: true,
+                thumbnail: true,
+              },
+            },
+          },
         },
       },
     });
