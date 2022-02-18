@@ -44,10 +44,10 @@ function MyApp({ Component, pageProps }: AppProps) {
       <UserStoreProvider createStore={userStore}>
         <NextUIProvider theme={theme}>
           <Container css={{ h: '100%', minHeight: '100vh' }}>
-            <Navbar />
             <ToastProvider>
               <CategoriesStoreProvider createStore={categoriesStore}>
                 <GameStoreProvider createStore={gameStore}>
+                  <Navbar />
                   <GameReviewStoreStoreProvider createStore={gameReviewStore}>
                     <Component {...pageProps} />
                   </GameReviewStoreStoreProvider>
