@@ -1,6 +1,6 @@
 import { User } from '@prisma/client';
 
 export class AuthResponse {
-  user: User;
+  user: Omit<User, 'password'>;
   accessToken: string;
 }

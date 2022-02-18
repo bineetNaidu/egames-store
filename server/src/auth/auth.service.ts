@@ -24,6 +24,7 @@ export class AuthService {
         id: (payload as User).id,
       },
     });
+    delete user.password;
     return { user };
   }
 
@@ -63,6 +64,7 @@ export class AuthService {
       email: user.email,
     });
 
+    delete user.password;
     return {
       user,
       accessToken,
@@ -109,6 +111,7 @@ export class AuthService {
       email: user.email,
     });
 
+    delete user.password;
     return {
       user,
       accessToken,
