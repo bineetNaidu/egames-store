@@ -38,7 +38,12 @@ export const ReviewCard: FC<ReviewCardProps> = memo(({ review, clickable }) => {
   }, [addToast, deleteReview, review.game, review.id]);
 
   return (
-    <Card shadow css={{ my: '$5' }} clickable={clickable}>
+    <Card
+      shadow
+      css={{ my: '$5' }}
+      clickable={clickable}
+      id={`review-${review.id}`}
+    >
       <Row align="center">
         <Avatar
           src={review.user?.avatar}
