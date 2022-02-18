@@ -18,7 +18,7 @@ model User {
   password   String
   role       String     @default("user")
   reviews    Review[]
-  purcahses  Purchase[]
+  purchases  Purchase[]
   created_at DateTime   @default(now())
   updated_at DateTime   @default(now())
 }
