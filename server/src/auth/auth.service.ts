@@ -18,6 +18,11 @@ export class AuthService {
 
   async profile(req: Request): Promise<Pick<AuthResponse, 'user'>> {
     const token = req.headers['x-access-token'] as string;
+    if (!token) {
+      return {
+        user: null,
+      };
+    }
     const payload = this.jwtService.decode(token, { json: true });
     const user = await this.prisma.user.findUnique({
       where: {

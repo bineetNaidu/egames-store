@@ -1,14 +1,8 @@
-import {
-  MiddlewareConsumer,
-  Module,
-  NestModule,
-  RequestMethod,
-} from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { PrismaService } from '../shared/prisma.service';
 import { JwtModule } from '@nestjs/jwt';
-import { IsAuthenticatedMiddleware } from '../shared/is-authenticated.middleware';
 
 @Module({
   imports: [
@@ -22,11 +16,4 @@ import { IsAuthenticatedMiddleware } from '../shared/is-authenticated.middleware
   controllers: [AuthController],
   providers: [AuthService, PrismaService],
 })
-export class AuthModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(IsAuthenticatedMiddleware).forRoutes({
-      path: '/auth/profile',
-      method: RequestMethod.GET,
-    });
-  }
-}
+export class AuthModule {}
