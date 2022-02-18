@@ -112,10 +112,8 @@ describe('AppController (e2e)', () => {
     const data = await request(authServer)
       .get('/auth/profile')
       .set('x-access-token', '')
-      .expect(401);
-    expect(data.body.errors).toBeDefined();
-    expect(data.body.errors[0].field).toEqual('token');
-    expect(data.body.errors[0].message).toEqual('No token provided');
+      .expect(200);
+    expect(data.body.user).toBe(null);
   });
 
   afterEach(async () => {
