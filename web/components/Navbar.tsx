@@ -1,22 +1,12 @@
 import { FC } from 'react';
 import Link from 'next/link';
-import {
-  Text,
-  Container,
-  Input,
-  Button,
-  Avatar,
-  Grid,
-  Row,
-  Col,
-  Card,
-} from '@nextui-org/react';
+import { Text, Container, Input, Button } from '@nextui-org/react';
 import styles from '../styles/Navbar.module.css';
 import { useUserStore } from '../lib/store/user.store';
+import { AuthCard } from './AuthCard';
 
 export const Navbar: FC = () => {
-  const { isAuthenticated, authUser } = useUserStore();
-
+  const { isAuthenticated } = useUserStore();
   return (
     <Container
       fluid
@@ -57,34 +47,7 @@ export const Navbar: FC = () => {
 
       <div className={styles.navbar_ctx}>
         {isAuthenticated ? (
-          <Card animated clickable css={{ width: 'fit-content' }} shadow>
-            <Grid>
-              <Row>
-                <Col>
-                  <Avatar
-                    size="lg"
-                    src={authUser!.avatar}
-                    color="gradient"
-                    bordered
-                  />
-                </Col>
-                <Col>
-                  <Text
-                    color="white"
-                    css={{
-                      fontWeight: 'bold',
-                      fontSize: '1.25rem',
-                      lineHeight: '1.5rem',
-                      marginLeft: '1rem',
-                      pt: '0.7rem',
-                    }}
-                  >
-                    {authUser!.username}
-                  </Text>
-                </Col>
-              </Row>
-            </Grid>
-          </Card>
+          <AuthCard />
         ) : (
           <>
             <Link href="/login" passHref>

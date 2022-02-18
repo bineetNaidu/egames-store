@@ -5,12 +5,13 @@ import { Rating } from 'react-simple-star-rating';
 
 interface ReviewCardProps {
   review: GameReview;
+  clickable?: boolean;
 }
 
-export const ReviewCard: FC<ReviewCardProps> = memo(({ review }) => {
+export const ReviewCard: FC<ReviewCardProps> = memo(({ review, clickable }) => {
   const rating = review.rating * 20;
   return (
-    <Card shadow css={{ my: '$5' }}>
+    <Card shadow css={{ my: '$5' }} clickable={clickable}>
       <Row align="center">
         <Avatar
           src={review.user?.avatar}
