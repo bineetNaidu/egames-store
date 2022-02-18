@@ -118,3 +118,10 @@ export interface IGetReviewResponse extends IResponse {
 export interface ICreateReviewResponse extends IResponse {
   review: GameReview;
 }
+
+export interface IDeleteReviewResponse extends IResponse {
+  review: {
+    deletedReviewId: number;
+    deleted: boolean;
+  };
+}
