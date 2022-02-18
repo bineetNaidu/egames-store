@@ -13,7 +13,6 @@ import { COOKIE_TOKEN_NAME } from '../../lib/constant';
 import { initializeUserStore } from '../../lib/store/user.store';
 import {
   IAuthResponse,
-  IDeleteReviewResponse,
   IGetGameResponse,
   IGetReviewResponse,
 } from '../../lib/types';
@@ -24,36 +23,11 @@ import {
   useGameReviewStore,
 } from '../../lib/store/gameReviews.store';
 import { AddReviewCard } from '../../components/AddReviewCard';
-import { useCallback } from 'react';
-import { useToasts } from 'react-toast-notifications';
 
 interface GameSSRProps extends IGetGameResponse {}
 
 const Game: NextPage<GameSSRProps> = ({ game }) => {
   const reviews = useGameReviewStore((state) => state.reviews);
-  const deleteReview = useGameReviewStore((state) => state.deleteReview);
-  const { addToast } = useToasts();
-
-  const handleDeleteReview = useCallback(
-    async (id: number) => {
-      const { data } = await axiosClient.delete<IDeleteReviewResponse>(
-        `/games/${game?.id}/reviews/${id}/delete`
-      );
-      if (data.review.deleted && data.review.deletedReviewId === id) {
-        deleteReview(id);
-        addToast('Review deleted', {
-          appearance: 'success',
-          autoDismiss: true,
-        });
-      } else {
-        addToast('Something went wrong', {
-          appearance: 'error',
-          autoDismiss: true,
-        });
-      }
-    },
-    [addToast, deleteReview, game]
-  );
 
   if (!game) {
     return (
@@ -136,11 +110,7 @@ const Game: NextPage<GameSSRProps> = ({ game }) => {
             </Text>
             <AddReviewCard gameId={game.id} />
             {reviews.map((review) => (
-              <ReviewCard
-                key={review.id}
-                review={review}
-                handleDeleteReview={handleDeleteReview}
-              />
+              <ReviewCard key={review.id} review={review} />
             ))}
           </Col>
         </Grid>
