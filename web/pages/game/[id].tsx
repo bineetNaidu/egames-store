@@ -23,8 +23,17 @@ import {
   useGameReviewStore,
 } from '../../lib/store/gameReviews.store';
 import { AddReviewCard } from '../../components/AddReviewCard';
+import { loadStripe } from '@stripe/stripe-js';
 
 interface GameSSRProps extends IGetGameResponse {}
+
+if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
+  throw new Error('Missing Stripe Publishable Key');
+}
+
+export const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+);
 
 const Game: NextPage<GameSSRProps> = ({ game }) => {
   const reviews = useGameReviewStore((state) => state.reviews);
@@ -84,7 +93,18 @@ const Game: NextPage<GameSSRProps> = ({ game }) => {
             <Text css={{ mt: '1rem', mb: '2rem' }}>{game.info}</Text>
 
             <Row align="center">
-              <Button color="gradient">Buy for ${game.price}</Button>
+              <form action="/api/checkout" method="POST">
+                <input
+                  type="text"
+                  name="gameId"
+                  hidden
+                  value={game.id}
+                  readOnly
+                />
+                <Button color="gradient" role="link">
+                  Buy for ${game.price}
+                </Button>
+              </form>
               <Text b css={{ ml: '$4' }}>
                 Size: {game.game_size}
               </Text>
