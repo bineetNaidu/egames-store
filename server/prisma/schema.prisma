@@ -24,16 +24,18 @@ model User {
 }
 
 model Purchase {
-  id         Int      @id @default(autoincrement())
-  currency   String   @default("USD")
-  amount     Int
-  discount   Int      @default(0)
-  user       User     @relation(fields: [user_id], references: [id])
-  user_id    Int
-  game       Game     @relation(fields: [game_id], references: [id])
-  game_id    Int
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  id                Int      @id @default(autoincrement())
+  currency          String   @default("USD")
+  amount            Int
+  discount          Int      @default(0)
+  stripe_session_id String
+  purchase_status   String
+  user              User     @relation(fields: [user_id], references: [id])
+  user_id           Int
+  game              Game     @relation(fields: [game_id], references: [id])
+  game_id           Int
+  created_at        DateTime @default(now())
+  updated_at        DateTime @default(now())
 }
 
 model Review {
