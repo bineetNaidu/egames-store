@@ -24,7 +24,7 @@ export type Game = {
   details: string;
   images: string[];
   tags: string[];
-  price: string;
+  price: number;
   is_available: string;
   category?: Pick<Category, 'id' | 'name'>;
   category_id?: number;
